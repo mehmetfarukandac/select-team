@@ -2,13 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { RefreshCcw, Users, Crown } from "lucide-react";
 import { getApp, getApps, initializeApp } from "firebase/app";
-import {
-  doc,
-  getDoc,
-  getFirestore,
-  onSnapshot,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
 
 /*
  ULTRA MODERN HALISAHA DRAFT UI
@@ -18,31 +12,30 @@ import {
  Smooth micro animations
 */
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCGoF5dq2apc5rjLefkX81rJ-KGsFYtI9M",
-  authDomain: "select-team-a5981.firebaseapp.com",
-  projectId: "select-team-a5981",
-  storageBucket: "select-team-a5981.firebasestorage.app",
-  messagingSenderId: "581590674074",
-  appId: "1:581590674074:web:c3c2dd3345445ed4ac0d23",
-  measurementId: "G-6WPHDN0VBH",
-};
 
-const DEFAULT_PLAYERS = [
+const firebaseConfig = {
+    apiKey: "AIzaSyCGoF5dq2apc5rjLefkX81rJ-KGsFYtI9M",
+    authDomain: "select-team-a5981.firebaseapp.com",
+    projectId: "select-team-a5981",
+    storageBucket: "select-team-a5981.firebasestorage.app",
+    messagingSenderId: "581590674074",
+    appId: "1:581590674074:web:c3c2dd3345445ed4ac0d23",
+    measurementId: "G-6WPHDN0VBH"
+  };
+  const DEFAULT_PLAYERS = [
+    "Ferhat",
   "Ant",
   "Baki",
-  "Ferhat",
   "Umur",
   "Burak",
   "Adil",
   "Murat",
   "Hüseyin",
-  "Andaç",
   "Özgür",
   "Kişi 11",
   "Kişi 12",
+  "Andaç",
 ];
-
 const CAPTAINS = ["Arda", "Bora"];
 const ROOM_ID = "oda-1";
 const MAX_PER_TEAM = 7;
@@ -72,9 +65,7 @@ function createInitialDraft() {
 }
 
 function isFirebaseConfigured() {
-  return !Object.values(firebaseConfig).some((v) =>
-    String(v).startsWith("BURAYA_"),
-  );
+  return !Object.values(firebaseConfig).some(v => String(v).startsWith("BURAYA_"));
 }
 
 function getFirebaseDb() {
@@ -99,7 +90,7 @@ function normalizeDraft(raw) {
 
 function getAvailablePlayers(draft) {
   const used = [...draft.teams.Arda, ...draft.teams.Bora];
-  return draft.players.filter((p) => !used.includes(p));
+  return draft.players.filter(p => !used.includes(p));
 }
 
 function buildCaptainSelectionDraft(currentDraft, captain) {
@@ -164,7 +155,7 @@ export default function HalisahaTakimSecimApp() {
         await setDoc(ref, createInitialDraft());
       }
 
-      onSnapshot(ref, (s) => {
+      onSnapshot(ref, s => {
         if (s.exists()) setDraft(normalizeDraft(s.data()));
         setLoading(false);
       });
@@ -232,25 +223,33 @@ export default function HalisahaTakimSecimApp() {
 
   if (!selectedCaptain) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-black to-slate-900 text-white">
+      <div className="min-h-screen flex items-center justify-center text-white bg-cover bg-center" style={{backgroundImage:'url(https://cdn.andacware.com/ChatGPT%20Image%2010%20Mar%202026%2016_56_55.jpg)'}}>
+
         <div className="flex flex-col gap-6 items-center">
+
           <div className="text-3xl font-bold tracking-tight">Takım Seç</div>
 
           <div className="flex gap-6">
-            {CAPTAINS.map((c) => (
+
+            {CAPTAINS.map(c => (
+
               <motion.button
                 key={c}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => chooseCaptain(c)}
-                className="px-12 py-10 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-2xl text-2xl font-semibold"
+                className="px-12 py-10 rounded-3xl bg-gradient-to-br from-emerald-500 to-green-700 shadow-2xl text-2xl font-semibold"
               >
                 <Crown className="inline mr-2" />
                 {c}
               </motion.button>
+
             ))}
+
           </div>
+
         </div>
+
       </div>
     );
   }
@@ -258,11 +257,15 @@ export default function HalisahaTakimSecimApp() {
   /* MAIN UI */
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-black to-indigo-950 text-white">
+
+    <div className="min-h-screen text-white bg-cover bg-center" style={{ backgroundImage: "url('https://cdn.andacware.com/WhatsApp%20Image%202026-02-19%20at%2020.23.37%20(1)%20(1).jpg')" }}>
+
       <div className="max-w-6xl mx-auto p-4 md:p-10">
+
         {/* HEADER */}
 
         <div className="flex items-center justify-between mb-6">
+
           <div className="flex items-center gap-3 text-sm opacity-70">
             <Users size={18} />
             {selectedCaptain} | sıra: {draft.currentCaptain}
@@ -275,16 +278,21 @@ export default function HalisahaTakimSecimApp() {
             <RefreshCcw size={16} className={syncing ? "animate-spin" : ""} />
             Güncelle
           </button>
+
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
+
           {/* PLAYER POOL */}
 
-          <div className="lg:col-span-1 bg-white/5 backdrop-blur-xl rounded-3xl p-4">
+          <div className="lg:col-span-1 bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4">
+
             <div className="mb-4 font-semibold text-lg">Oyuncular</div>
 
             <div className="grid grid-cols-2 gap-3">
-              {availablePlayers.map((player) => (
+
+              {availablePlayers.map(player => (
+
                 <motion.button
                   key={player}
                   whileHover={canPick ? { scale: 1.05 } : {}}
@@ -293,40 +301,50 @@ export default function HalisahaTakimSecimApp() {
                   onClick={() => pickPlayer(player)}
                   className={`p-4 rounded-xl text-left ${
                     canPick
-                      ? "bg-gradient-to-br from-indigo-500 to-purple-600"
+                      ? "bg-gradient-to-br from-emerald-500 to-green-700"
                       : "bg-white/5 opacity-40"
                   }`}
                 >
                   {player}
                 </motion.button>
+
               ))}
+
             </div>
+
           </div>
 
           {/* TEAMS */}
 
-          {CAPTAINS.map((captain) => {
+          {CAPTAINS.map(captain => {
+
             const team = draft.teams[captain];
             const active = draft.currentCaptain === captain;
 
             return (
+
               <div
                 key={captain}
-                className={`bg-white/5 backdrop-blur-xl rounded-3xl p-4 ${
-                  active ? "ring-2 ring-indigo-500" : ""
+                className={`bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4 ${
+                  active ? "ring-2 ring-emerald-500" : ""
                 }`}
               >
+
                 <div className="flex items-center justify-between mb-4">
+
                   <div className="flex items-center gap-2 text-lg font-semibold">
                     <Crown size={18} />
                     {captain}
                   </div>
 
                   <div className="text-sm opacity-70">{team.length}/7</div>
+
                 </div>
 
                 <div className="space-y-2">
+
                   {team.map((p, i) => (
+
                     <motion.div
                       key={p}
                       initial={{ opacity: 0, y: 10 }}
@@ -336,13 +354,22 @@ export default function HalisahaTakimSecimApp() {
                       <span>{p}</span>
                       <span className="opacity-50">#{i + 1}</span>
                     </motion.div>
+
                   ))}
+
                 </div>
+
               </div>
+
             );
+
           })}
+
         </div>
+
       </div>
+
     </div>
+
   );
 }

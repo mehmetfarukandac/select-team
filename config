@@ -8,3 +8,17 @@ const firebaseConfig = {
     appId: "1:581590674074:web:c3c2dd3345445ed4ac0d23",
     measurementId: "G-6WPHDN0VBH"
   };
+  const DEFAULT_PLAYERS = [
+    "Ferhat",
+  "Ant",
+  "Baki",
+  "Umur",
+  "Burak",
+  "Adil",
+  "Murat",
+  "Hüseyin",
+  "Özgür",
+  "Kişi 11",
+  "Kişi 12",
+  "Andaç",
+];
