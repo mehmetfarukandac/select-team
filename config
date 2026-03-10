@@ -1,0 +1,10 @@
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCGoF5dq2apc5rjLefkX81rJ-KGsFYtI9M",
+    authDomain: "select-team-a5981.firebaseapp.com",
+    projectId: "select-team-a5981",
+    storageBucket: "select-team-a5981.firebasestorage.app",
+    messagingSenderId: "581590674074",
+    appId: "1:581590674074:web:c3c2dd3345445ed4ac0d23",
+    measurementId: "G-6WPHDN0VBH"
+  };
