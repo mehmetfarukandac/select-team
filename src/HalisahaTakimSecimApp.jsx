@@ -2,7 +2,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { RefreshCcw, Users, Crown } from "lucide-react";
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { doc, getDoc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
 
 /*
  ULTRA MODERN HALISAHA DRAFT UI
@@ -12,18 +18,17 @@ import { doc, getDoc, getFirestore, onSnapshot, setDoc } from "firebase/firestor
  Smooth micro animations
 */
 
-
 const firebaseConfig = {
-    apiKey: "AIzaSyCGoF5dq2apc5rjLefkX81rJ-KGsFYtI9M",
-    authDomain: "select-team-a5981.firebaseapp.com",
-    projectId: "select-team-a5981",
-    storageBucket: "select-team-a5981.firebasestorage.app",
-    messagingSenderId: "581590674074",
-    appId: "1:581590674074:web:c3c2dd3345445ed4ac0d23",
-    measurementId: "G-6WPHDN0VBH"
-  };
-  const DEFAULT_PLAYERS = [
-    "Ferhat",
+  apiKey: "AIzaSyCGoF5dq2apc5rjLefkX81rJ-KGsFYtI9M",
+  authDomain: "select-team-a5981.firebaseapp.com",
+  projectId: "select-team-a5981",
+  storageBucket: "select-team-a5981.firebasestorage.app",
+  messagingSenderId: "581590674074",
+  appId: "1:581590674074:web:c3c2dd3345445ed4ac0d23",
+  measurementId: "G-6WPHDN0VBH",
+};
+const DEFAULT_PLAYERS = [
+  "Ferhat",
   "Ant",
   "Baki",
   "Umur",
@@ -32,8 +37,8 @@ const firebaseConfig = {
   "Murat",
   "Hüseyin",
   "Özgür",
-  "Kişi 11",
-  "Kişi 12",
+  "Baha",
+  "Saam",
   "Andaç",
 ];
 const CAPTAINS = ["Arda", "Bora"];
@@ -65,7 +70,9 @@ function createInitialDraft() {
 }
 
 function isFirebaseConfigured() {
-  return !Object.values(firebaseConfig).some(v => String(v).startsWith("BURAYA_"));
+  return !Object.values(firebaseConfig).some((v) =>
+    String(v).startsWith("BURAYA_"),
+  );
 }
 
 function getFirebaseDb() {
@@ -90,7 +97,7 @@ function normalizeDraft(raw) {
 
 function getAvailablePlayers(draft) {
   const used = [...draft.teams.Arda, ...draft.teams.Bora];
-  return draft.players.filter(p => !used.includes(p));
+  return draft.players.filter((p) => !used.includes(p));
 }
 
 function buildCaptainSelectionDraft(currentDraft, captain) {
@@ -155,7 +162,7 @@ export default function HalisahaTakimSecimApp() {
         await setDoc(ref, createInitialDraft());
       }
 
-      onSnapshot(ref, s => {
+      onSnapshot(ref, (s) => {
         if (s.exists()) setDraft(normalizeDraft(s.data()));
         setLoading(false);
       });
@@ -223,16 +230,18 @@ export default function HalisahaTakimSecimApp() {
 
   if (!selectedCaptain) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white bg-cover bg-center" style={{backgroundImage:'url(https://cdn.andacware.com/WhatsApp%20Image%202026-02-19%20at%2020.23.37%20(1)%20(1).jpg)'}}>
-
+      <div
+        className="min-h-screen flex items-center justify-center text-white bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url(https://cdn.andacware.com/WhatsApp%20Image%202026-02-19%20at%2020.23.37%20(1)%20(1).jpg)",
+        }}
+      >
         <div className="flex flex-col gap-6 items-center">
-
           <div className="text-3xl font-bold tracking-tight">Takım Seç</div>
 
           <div className="flex gap-6">
-
-            {CAPTAINS.map(c => (
-
+            {CAPTAINS.map((c) => (
               <motion.button
                 key={c}
                 whileHover={{ scale: 1.05 }}
@@ -243,13 +252,9 @@ export default function HalisahaTakimSecimApp() {
                 <Crown className="inline mr-2" />
                 {c}
               </motion.button>
-
             ))}
-
           </div>
-
         </div>
-
       </div>
     );
   }
@@ -257,15 +262,17 @@ export default function HalisahaTakimSecimApp() {
   /* MAIN UI */
 
   return (
-
-    <div className="min-h-screen text-white bg-cover bg-center" style={{ backgroundImage: "url('https://cdn.andacware.com/WhatsApp%20Image%202026-02-19%20at%2020.23.37%20(1)%20(1).jpg')" }}>
-
+    <div
+      className="min-h-screen text-white bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://cdn.andacware.com/WhatsApp%20Image%202026-02-19%20at%2020.23.37%20(1)%20(1).jpg')",
+      }}
+    >
       <div className="max-w-6xl mx-auto p-4 md:p-10">
-
         {/* HEADER */}
 
         <div className="flex items-center justify-between mb-6">
-
           <div className="flex items-center gap-3 text-sm opacity-70">
             <Users size={18} />
             {selectedCaptain} | sıra: {draft.currentCaptain}
@@ -278,21 +285,16 @@ export default function HalisahaTakimSecimApp() {
             <RefreshCcw size={16} className={syncing ? "animate-spin" : ""} />
             Güncelle
           </button>
-
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-
           {/* PLAYER POOL */}
 
           <div className="lg:col-span-1 bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4">
-
             <div className="mb-4 font-semibold text-lg">Oyuncular</div>
 
             <div className="grid grid-cols-2 gap-3">
-
-              {availablePlayers.map(player => (
-
+              {availablePlayers.map((player) => (
                 <motion.button
                   key={player}
                   whileHover={canPick ? { scale: 1.05 } : {}}
@@ -307,44 +309,34 @@ export default function HalisahaTakimSecimApp() {
                 >
                   {player}
                 </motion.button>
-
               ))}
-
             </div>
-
           </div>
 
           {/* TEAMS */}
 
-          {CAPTAINS.map(captain => {
-
+          {CAPTAINS.map((captain) => {
             const team = draft.teams[captain];
             const active = draft.currentCaptain === captain;
 
             return (
-
               <div
                 key={captain}
                 className={`bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4 ${
                   active ? "ring-2 ring-emerald-500" : ""
                 }`}
               >
-
                 <div className="flex items-center justify-between mb-4">
-
                   <div className="flex items-center gap-2 text-lg font-semibold">
                     <Crown size={18} />
                     {captain}
                   </div>
 
                   <div className="text-sm opacity-70">{team.length}/7</div>
-
                 </div>
 
                 <div className="space-y-2">
-
                   {team.map((p, i) => (
-
                     <motion.div
                       key={p}
                       initial={{ opacity: 0, y: 10 }}
@@ -354,22 +346,13 @@ export default function HalisahaTakimSecimApp() {
                       <span>{p}</span>
                       <span className="opacity-50">#{i + 1}</span>
                     </motion.div>
-
                   ))}
-
                 </div>
-
               </div>
-
             );
-
           })}
-
         </div>
-
       </div>
-
     </div>
-
   );
 }
