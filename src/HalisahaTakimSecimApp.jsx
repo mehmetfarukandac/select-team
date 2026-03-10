@@ -29,7 +29,6 @@ const firebaseConfig = {
 };
 
 const DEFAULT_PLAYERS = [
-  "Andaç",
   "Ant",
   "Baki",
   "Ferhat",
@@ -37,8 +36,9 @@ const DEFAULT_PLAYERS = [
   "Burak",
   "Adil",
   "Murat",
-  "Özgür",
   "Hüseyin",
+  "Andaç",
+  "Özgür",
   "Kişi 11",
   "Kişi 12",
 ];
