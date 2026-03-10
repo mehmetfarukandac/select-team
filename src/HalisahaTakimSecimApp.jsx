@@ -42,6 +42,7 @@ const DEFAULT_PLAYERS = [
   "Andaç",
 ];
 const CAPTAINS = ["Arda", "Bora"];
+const SPECTATOR_ROLE = "İzleyici";
 const ROOM_ID = "oda-1";
 const MAX_PER_TEAM = 7;
 
@@ -178,8 +179,10 @@ export default function HalisahaTakimSecimApp() {
     await setDoc(ref, next);
   }
 
-  async function chooseCaptain(captain) {
-    setSelectedCaptain(captain);
+  async function chooseCaptain(role) {
+    setSelectedCaptain(role);
+
+    if (role === SPECTATOR_ROLE) return;
 
     const db = getFirebaseDb();
     const ref = doc(db, "draftRooms", ROOM_ID);
@@ -187,7 +190,7 @@ export default function HalisahaTakimSecimApp() {
 
     const current = snap.exists() ? snap.data() : createInitialDraft();
 
-    const next = buildCaptainSelectionDraft(current, captain);
+    const next = buildCaptainSelectionDraft(current, role);
 
     await writeDraft(next);
   }
@@ -222,7 +225,8 @@ export default function HalisahaTakimSecimApp() {
   const canPick =
     selectedCaptain &&
     draft.started &&
-    draft.currentCaptain === selectedCaptain;
+    draft.currentCaptain === selectedCaptain &&
+    selectedCaptain !== SPECTATOR_ROLE;
 
   if (loading) return <div className="min-h-screen bg-black" />;
 
@@ -234,20 +238,26 @@ export default function HalisahaTakimSecimApp() {
         className="min-h-screen flex items-center justify-center text-white bg-cover bg-center"
         style={{
           backgroundImage:
-            "url(https://cdn.andacware.com/WhatsApp%20Image%202026-02-19%20at%2020.23.37%20(1)%20(1).jpg)",
+            "url('https://cdn.andacware.com/WhatsApp%20Image%202026-02-19%20at%2020.23.37%20%284%29.jpg')",
         }}
       >
         <div className="flex flex-col gap-6 items-center">
-          <div className="text-3xl font-bold tracking-tight">Takım Seç</div>
+          <div className="text-3xl font-bold tracking-tight">Rol Seç</div>
 
-          <div className="flex gap-6">
-            {CAPTAINS.map((c) => (
+          <div className="grid w-full max-w-3xl grid-cols-2 gap-6">
+            {[...CAPTAINS, SPECTATOR_ROLE].map((c) => (
               <motion.button
                 key={c}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => chooseCaptain(c)}
-                className="px-12 py-10 rounded-3xl bg-gradient-to-br from-emerald-500 to-green-700 shadow-2xl text-2xl font-semibold"
+                className={`px-12 py-10 rounded-3xl shadow-2xl text-2xl font-semibold ${
+                  c === SPECTATOR_ROLE ? "col-span-2" : ""
+                } ${
+                  c === SPECTATOR_ROLE
+                    ? "bg-gradient-to-br from-sky-500 to-indigo-700"
+                    : "bg-gradient-to-br from-emerald-500 to-green-700"
+                }`}
               >
                 <Crown className="inline mr-2" />
                 {c}
@@ -287,31 +297,39 @@ export default function HalisahaTakimSecimApp() {
           </button>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div
+          className={`grid gap-6 ${
+            selectedCaptain === SPECTATOR_ROLE
+              ? "lg:grid-cols-2"
+              : "lg:grid-cols-3"
+          }`}
+        >
           {/* PLAYER POOL */}
 
-          <div className="lg:col-span-1 bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4">
-            <div className="mb-4 font-semibold text-lg">Oyuncular</div>
+          {selectedCaptain !== SPECTATOR_ROLE && (
+            <div className="lg:col-span-1 bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4">
+              <div className="mb-4 font-semibold text-lg">Oyuncular</div>
 
-            <div className="grid grid-cols-2 gap-3">
-              {availablePlayers.map((player) => (
-                <motion.button
-                  key={player}
-                  whileHover={canPick ? { scale: 1.05 } : {}}
-                  whileTap={canPick ? { scale: 0.95 } : {}}
-                  disabled={!canPick}
-                  onClick={() => pickPlayer(player)}
-                  className={`p-4 rounded-xl text-left ${
-                    canPick
-                      ? "bg-gradient-to-br from-emerald-500 to-green-700"
-                      : "bg-white/5 opacity-40"
-                  }`}
-                >
-                  {player}
-                </motion.button>
-              ))}
+              <div className="grid grid-cols-2 gap-3">
+                {availablePlayers.map((player) => (
+                  <motion.button
+                    key={player}
+                    whileHover={canPick ? { scale: 1.05 } : {}}
+                    whileTap={canPick ? { scale: 0.95 } : {}}
+                    disabled={!canPick}
+                    onClick={() => pickPlayer(player)}
+                    className={`p-4 rounded-xl text-left ${
+                      canPick
+                        ? "bg-gradient-to-br from-emerald-500 to-green-700"
+                        : "bg-white/5 opacity-40"
+                    }`}
+                  >
+                    {player}
+                  </motion.button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* TEAMS */}
 
