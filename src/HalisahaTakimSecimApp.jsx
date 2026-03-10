@@ -223,7 +223,7 @@ export default function HalisahaTakimSecimApp() {
 
   if (!selectedCaptain) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white bg-cover bg-center" style={{backgroundImage:'url(https://cdn.andacware.com/ChatGPT%20Image%2010%20Mar%202026%2016_56_55.jpg)'}}>
+      <div className="min-h-screen flex items-center justify-center text-white bg-cover bg-center" style={{backgroundImage:'url(https://cdn.andacware.com/WhatsApp%20Image%202026-02-19%20at%2020.23.37%20(1)%20(1).jpg)'}}>
 
         <div className="flex flex-col gap-6 items-center">
 
